@@ -8,10 +8,10 @@ namespace HttpRequestsSample.Pages;
 // <snippet_Class>
 public class BasicModel : PageModel
 {
-    private readonly IHttpClientFactory _httpClientFactory;
+    private readonly HttpClient _httpClient;
 
     public BasicModel(IHttpClientFactory httpClientFactory) =>
-        _httpClientFactory = httpClientFactory;
+        _httpClient = httpClientFactory.CreateClient();
 
     public IEnumerable<GitHubBranch>? GitHubBranches { get; set; }
 
@@ -28,8 +28,7 @@ public class BasicModel : PageModel
             }
         };
 
-        var httpClient = _httpClientFactory.CreateClient();
-        var httpResponseMessage = await httpClient.SendAsync(httpRequestMessage);
+        var httpResponseMessage = await _httpClient.SendAsync(httpRequestMessage);
 
         if (httpResponseMessage.IsSuccessStatusCode)
         {
